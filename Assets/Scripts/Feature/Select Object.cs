@@ -5,7 +5,7 @@ public class SelectObject : MonoBehaviour
 {
     [SerializeField] private GameObject selectObject;
 
-    void Awake()
+    void Start()
     {
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(selectObject);
