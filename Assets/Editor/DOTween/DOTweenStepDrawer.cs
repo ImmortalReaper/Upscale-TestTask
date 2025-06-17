@@ -1,16 +1,24 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 [CustomPropertyDrawer(typeof(DOTweenStep))]
 public class DOTweenStepDrawer : PropertyDrawer
 {
-    private bool isExpanded = false;
     private const float lineHeight = 18f;
     private const float spacing = 2f;
+    
+    // Dictionary to store expanded state for each property
+    private static Dictionary<string, bool> expandedStates = new Dictionary<string, bool>();
     
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.BeginProperty(position, label, property);
+        
+        // Get unique key for this property
+        string propertyKey = property.propertyPath;
+        if (!expandedStates.ContainsKey(propertyKey))
+            expandedStates[propertyKey] = false;
         
         var operation = property.FindPropertyRelative("operation");
         var tweenType = property.FindPropertyRelative("tweenType");
@@ -27,11 +35,11 @@ public class DOTweenStepDrawer : PropertyDrawer
             GUI.backgroundColor = new Color(0.8f, 0.8f, 1f); // Light blue
         
         string headerText = $"{((TweenType)tweenType.enumValueIndex)} ({duration.floatValue}s) - {((StepOperation)operation.enumValueIndex)}";
-        isExpanded = EditorGUI.Foldout(headerRect, isExpanded, headerText, true);
+        expandedStates[propertyKey] = EditorGUI.Foldout(headerRect, expandedStates[propertyKey], headerText, true);
         
         GUI.backgroundColor = originalColor;
         
-        if (isExpanded)
+        if (expandedStates[propertyKey])
         {
             EditorGUI.indentLevel++;
             float yPos = position.y + lineHeight + spacing;
@@ -114,7 +122,7 @@ public class DOTweenStepDrawer : PropertyDrawer
             {
                 yPos = DrawPunchSettings(position, property, yPos);
             }
-            else if (currentType == TweenType.Shake)
+            else if (currentType == TweenType.Shake || currentType == TweenType.ShakeAnchor)
             {
                 yPos = DrawShakeSettings(position, property, yPos);
             }
@@ -153,11 +161,13 @@ public class DOTweenStepDrawer : PropertyDrawer
         {
             case TweenType.Move:
             case TweenType.MoveLocal:
+            case TweenType.MoveAnchor: // Added support for new UI movement type
             case TweenType.Rotate:
             case TweenType.RotateLocal:
             case TweenType.Scale:
             case TweenType.Punch:
             case TweenType.Shake:
+            case TweenType.ShakeAnchor: // Added support for new UI shake type
                 var targetVector = property.FindPropertyRelative("targetVector");
                 var vectorRect = new Rect(position.x, yPos, position.width, lineHeight);
                 string label = GetVectorLabel(tweenType);
@@ -253,6 +263,8 @@ public class DOTweenStepDrawer : PropertyDrawer
             case TweenType.Move:
             case TweenType.MoveLocal:
                 return "Target Position";
+            case TweenType.MoveAnchor: // Added label for new UI movement type
+                return "Target Anchored Position";
             case TweenType.Rotate:
             case TweenType.RotateLocal:
                 return "Target Rotation";
@@ -262,6 +274,8 @@ public class DOTweenStepDrawer : PropertyDrawer
                 return "Punch Strength";
             case TweenType.Shake:
                 return "Shake Strength";
+            case TweenType.ShakeAnchor: // Added label for new UI shake type
+                return "Shake Anchor Strength";
             default:
                 return "Target Vector";
         }
@@ -280,12 +294,17 @@ public class DOTweenStepDrawer : PropertyDrawer
         }
         return 0;
     }
-    
+
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        if (!isExpanded)
+        // Get unique key for this property
+        string propertyKey = property.propertyPath;
+        if (!expandedStates.ContainsKey(propertyKey))
+            expandedStates[propertyKey] = false;
+
+        if (!expandedStates[propertyKey])
             return lineHeight;
-        
+
         float height = lineHeight + spacing; // Header
 
         var operation = property.FindPropertyRelative("operation");
@@ -293,47 +312,46 @@ public class DOTweenStepDrawer : PropertyDrawer
         var useCustomCurve = property.FindPropertyRelative("useCustomCurve");
         var enableLoop = property.FindPropertyRelative("enableLoop");
         var useCustomTarget = property.FindPropertyRelative("useCustomTarget");
-        
+
         // Basic fields
         height += (lineHeight + spacing) * 4; // operation, tweenType, duration, delay
-        
+
         // Warning for first step
         if (GetStepIndex(property) == 0 && operation.enumValueIndex == 1)
             height += lineHeight + spacing;
-        
+
         // Easing
         height += lineHeight + spacing; // useCustomCurve
         height += lineHeight + spacing; // curve or ease type
-        
+
         // Target values
         height += lineHeight + spacing;
-        
+
         // Loop settings
         height += lineHeight + spacing; // enableLoop
         if (enableLoop.boolValue)
             height += (lineHeight + spacing) * 2; // loopCount, loopType
-        
+
         // Special settings
         TweenType currentType = (TweenType)tweenType.enumValueIndex;
-        if (currentType == TweenType.Shake) // currentType == TweenType.Punch ||
+        if (currentType == TweenType.Shake || currentType == TweenType.ShakeAnchor) // Added ShakeAnchor support
             height += (lineHeight + spacing) * 3;
-        else if(currentType == TweenType.Punch)
+        else if (currentType == TweenType.Punch)
             height += (lineHeight + spacing) * 2;
-        
+
         // Custom target
         height += lineHeight + spacing; // useCustomTarget
         if (useCustomTarget.boolValue)
             height += lineHeight + spacing;
-        
+
         // Component overrides
         if (useCustomTarget.boolValue && (currentType == TweenType.Fade || currentType == TweenType.Color))
         {
-            //height += lineHeight + spacing; // label
-            height += (lineHeight + spacing) * 3; // components
+            height += (lineHeight + spacing) * 2; // base components
             if (currentType == TweenType.Fade)
-                height += lineHeight + spacing;
+                height += lineHeight + spacing; // canvasGroup
         }
-        
+
         return height;
     }
 }

@@ -1,17 +1,28 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(TMP_Dropdown))]
-public class UIDropdownStateController : MonoBehaviour
+public class UIDropdownStateController : MonoBehaviour, 
+    ISelectHandler, IDeselectHandler, 
+    IPointerEnterHandler, IPointerExitHandler
 {
     [Header("CanvasGroups")]
     [SerializeField] private CanvasGroup normalGroup;
     [SerializeField] private CanvasGroup disabledGroup;
+    [SerializeField] private CanvasGroup highlightedGroup;
     
-    public Action<int> onDropdownValueChanged;
+    [Header("Highlight Animations (optional)")]
+    [SerializeField] private bool useHighlightedAnimation = false;
+    [SerializeField] private DOTweenSequenceAnimator highlightedIn;
+    [SerializeField] private DOTweenSequenceAnimator highlightedOut;
 
     private TMP_Dropdown _dropdown;
+
+    public TMP_Dropdown Dropdown => _dropdown;
+    public Action<int> onDropdownValueChanged;
 
     private void Awake()
     {
@@ -50,12 +61,48 @@ public class UIDropdownStateController : MonoBehaviour
 
     private void SetCanvasGroup(CanvasGroup active)
     {
-        foreach (var group in new[] { normalGroup, disabledGroup })
+        List<CanvasGroup> groups = new List<CanvasGroup> { normalGroup, disabledGroup };
+        if(!useHighlightedAnimation)
+            groups.Add(highlightedGroup);
+        foreach (var group in groups)
         {
+            if(group == null) continue;
             bool isActive = group == active;
             group.alpha = isActive ? 1f : 0f;
             group.blocksRaycasts = isActive;
             group.interactable = isActive;
         }
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        if(useHighlightedAnimation)
+            highlightedIn?.PlaySequence();
+        else
+            SetCanvasGroup(highlightedGroup);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        if(useHighlightedAnimation)
+            highlightedOut?.PlaySequence();
+        else
+            SetCanvasGroup(normalGroup);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(useHighlightedAnimation)
+            highlightedIn?.PlaySequence();
+        else
+            SetCanvasGroup(highlightedGroup);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(useHighlightedAnimation)
+            highlightedOut?.PlaySequence();
+        else
+            SetCanvasGroup(normalGroup);
     }
 }

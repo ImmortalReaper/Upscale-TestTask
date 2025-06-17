@@ -5,8 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Slider))]
-public class UISliderStateController : MonoBehaviour,
+public class UIDropdownToggleStateController : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler,
     ISelectHandler, IDeselectHandler
 {
@@ -19,47 +18,78 @@ public class UISliderStateController : MonoBehaviour,
     [SerializeField] private DOTweenSequenceAnimator highlightedIn;
     [SerializeField] private DOTweenSequenceAnimator highlightedOut;
     [Header("Text")]
-    [SerializeField] private TextMeshProUGUI valueText;
-
-    private Slider _slider;
+    [SerializeField] private TextMeshProUGUI textNormal;
+    [SerializeField] private TextMeshProUGUI textDisabled;
+    [SerializeField] private TextMeshProUGUI textHighlighted;
+    [Header("Checkmark")]
+    [SerializeField] private Image checkmarkNormal;
+    [SerializeField] private Image checkmarkDisabled;
+    [SerializeField] private Image checkmarkHighlighted;
+    
+    private Toggle _toggle;
+    
+    public event Action OnHiglighted;
+    public event Action OnSelected;
 
     private void Awake()
     {
-        _slider = GetComponent<Slider>();
-        _slider.onValueChanged.AddListener(UpdateValueText);
+        _toggle = GetComponent<Toggle>();
+        _toggle.onValueChanged.AddListener(HandleToggleValueChanged);
     }
 
-    private void OnEnable() => UpdateState();
-
-    private void OnDestroy()
+    private void Start()
     {
-        _slider.onValueChanged.RemoveListener(UpdateValueText);
+        UpdateGroupState();
+        UpdateAllStates();
     }
 
-    private void UpdateValueText(float value)
+    private void OnEnable()
     {
-        if (valueText != null)
-            valueText.text = value.ToString("F2");
+        UpdateGroupState();
+        UpdateAllStates();
+    }
+
+    private void OnDisable()
+    {
+        _toggle.onValueChanged.RemoveListener(HandleToggleValueChanged);
+    }
+
+    private void HandleToggleValueChanged(bool isOn)
+    {
+        UpdateGroupState();
+        UpdateAllStates();
+    }
+
+    private void UpdateAllStates()
+    {
+        if (textHighlighted && checkmarkHighlighted)
+        {
+            textHighlighted.text = textNormal.text;
+            checkmarkHighlighted.enabled = _toggle.isOn;
+        }
+        if(textDisabled && checkmarkDisabled)
+        {
+            textDisabled.text = textNormal.text;
+            checkmarkDisabled.enabled = _toggle.isOn;
+        }
+        if (checkmarkNormal)
+        {
+            checkmarkNormal.enabled = _toggle.isOn;
+        }
     }
     
-    public void SetInteractable(bool interactable)
+    private void UpdateGroupState()
     {
-        _slider.interactable = interactable;
-        UpdateState();
-    }
-
-    private void UpdateState()
-    {
-        if (!_slider.interactable)
-            SetCanvasGroup(disabledGroup);
-        else
+        if (_toggle.interactable)
             SetCanvasGroup(normalGroup);
+        else
+            SetCanvasGroup(disabledGroup);
     }
-
+    
     private void SetCanvasGroup(CanvasGroup active)
     {
         List<CanvasGroup> groups = new List<CanvasGroup> { normalGroup, disabledGroup };
-        if (!useHighlightedAnimation)
+        if(!useHighlightedAnimation)
             groups.Add(highlightedGroup);
         foreach (var group in groups)
         {
@@ -70,13 +100,14 @@ public class UISliderStateController : MonoBehaviour,
             group.interactable = isActive;
         }
     }
-
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
         if(useHighlightedAnimation)
             highlightedIn?.PlaySequence();
         else
             SetCanvasGroup(highlightedGroup);
+        OnHiglighted?.Invoke();
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -93,6 +124,7 @@ public class UISliderStateController : MonoBehaviour,
             highlightedIn?.PlaySequence();
         else
             SetCanvasGroup(highlightedGroup);
+        OnSelected?.Invoke();
     }
 
     public void OnDeselect(BaseEventData eventData)
@@ -101,5 +133,11 @@ public class UISliderStateController : MonoBehaviour,
             highlightedOut?.PlaySequence();
         else
             SetCanvasGroup(normalGroup);
+    }
+
+    public void SetInteractable(bool interactable)
+    {
+        _toggle.interactable = interactable;
+        UpdateGroupState();
     }
 }

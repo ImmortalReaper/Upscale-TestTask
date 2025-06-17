@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using CanvasGroup = UnityEngine.CanvasGroup;
 
 [RequireComponent(typeof(Button))]
 public class UIButtonStateController : MonoBehaviour, 
@@ -10,11 +12,14 @@ public class UIButtonStateController : MonoBehaviour,
     [Header("Canvas Groups")]
     [SerializeField] private CanvasGroup normalGroup;
     [SerializeField] private CanvasGroup disabledGroup;
+    [SerializeField] private CanvasGroup highlightedGroup;
     [Header("Highlight Animations (optional)")]
+    [SerializeField] private bool useHighlightedAnimation = false;
     [SerializeField] private DOTweenSequenceAnimator highlightedIn;
     [SerializeField] private DOTweenSequenceAnimator highlightedOut;
     [Header("Selected Animations (optional)")]
-    [SerializeField] private bool useHighlightedAnimation = false;
+    [SerializeField] private bool useHighlightedGroup = false;
+    [SerializeField] private bool useCurrentHighlightedAnimation = false;
     [SerializeField] private DOTweenSequenceAnimator selectedIn;
     [SerializeField] private DOTweenSequenceAnimator selectedOut;
 
@@ -26,11 +31,31 @@ public class UIButtonStateController : MonoBehaviour,
 
     private void OnEnable() => UpdateState();
 
-    public void OnPointerEnter(PointerEventData eventData) => highlightedIn?.PlaySequence();
-    public void OnPointerExit(PointerEventData eventData) => highlightedOut?.PlaySequence();
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(useHighlightedAnimation)
+            highlightedIn?.PlaySequence();
+        else
+            SetCanvasGroup(highlightedGroup);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(useHighlightedAnimation)
+            highlightedIn?.PlaySequence();
+        else
+            SetCanvasGroup(normalGroup);
+    }
+
     public void OnSelect(BaseEventData eventData)
     {
-        if (useHighlightedAnimation)
+        if (useHighlightedGroup)
+        {
+            SetCanvasGroup(highlightedGroup);
+            return;
+        }
+        
+        if (useCurrentHighlightedAnimation)
             highlightedIn?.PlaySequence();
         else
             selectedIn?.PlaySequence();
@@ -38,7 +63,13 @@ public class UIButtonStateController : MonoBehaviour,
 
     public void OnDeselect(BaseEventData eventData)
     {
-        if (useHighlightedAnimation)
+        if (useHighlightedGroup)
+        {
+            SetCanvasGroup(normalGroup);
+            return;
+        }
+        
+        if (useCurrentHighlightedAnimation)
             highlightedOut?.PlaySequence();
         else
             selectedOut?.PlaySequence();
@@ -60,9 +91,12 @@ public class UIButtonStateController : MonoBehaviour,
     
     private void SetCanvasGroup(CanvasGroup active)
     {
-        CanvasGroup[] groups = { normalGroup, disabledGroup };
+        List<CanvasGroup> groups = new List<CanvasGroup> { normalGroup, disabledGroup };
+        if (!useHighlightedAnimation)
+            groups.Add(highlightedGroup);
         foreach (var g in groups)
         {
+            if(g == null) continue;
             bool isActive = (g == active);
             g.alpha = isActive ? 1f : 0f;
             g.blocksRaycasts = isActive;

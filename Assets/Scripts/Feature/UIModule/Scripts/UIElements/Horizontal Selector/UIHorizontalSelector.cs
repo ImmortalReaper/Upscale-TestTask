@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[RequireComponent(typeof(CanvasGroup))]
 public class UIHorizontalSelector : MonoBehaviour
 {
     [Header("Buttons")]

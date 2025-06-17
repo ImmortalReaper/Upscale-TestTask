@@ -10,7 +10,9 @@ public class UIToggleStateController : MonoBehaviour,
     [Header("Canvas Groups")]
     [SerializeField] private CanvasGroup onGroup;
     [SerializeField] private CanvasGroup offGroup;
+    [SerializeField] private CanvasGroup highlightedGroup;
     [Header("Toggle-State Animations")]
+    [SerializeField] private bool useOnOffAnimations = false;
     [SerializeField] private DOTweenSequenceAnimator onStateAnim;
     [SerializeField] private DOTweenSequenceAnimator offStateAnim;
     [Header("Highlight Animations (optional)")]
@@ -42,6 +44,15 @@ public class UIToggleStateController : MonoBehaviour,
 
     private void UpdateVisualState(bool isOn, bool playAnim)
     {
+        if (useOnOffAnimations && playAnim)
+        {
+            if (isOn)  
+                onStateAnim.PlaySequence();
+            else       
+                offStateAnim.PlaySequence();
+            return;
+        }
+        
         CanvasGroup activeGroup = isOn ? onGroup : offGroup;
         CanvasGroup inactiveGroup = isOn ? offGroup : onGroup;
         
@@ -52,18 +63,10 @@ public class UIToggleStateController : MonoBehaviour,
         inactiveGroup.alpha = 0f;
         inactiveGroup.interactable = false;
         inactiveGroup.blocksRaycasts = false;
-        
-        if (playAnim)
-        {
-            if (isOn)  
-                onStateAnim.PlaySequence();
-            else       
-                offStateAnim.PlaySequence();
-        }
     }
     
-    public void OnPointerEnter(PointerEventData eventData)  => highlightedIn?.PlaySequence();
-    public void OnPointerExit(PointerEventData eventData)   => highlightedOut?.PlaySequence();
+    public void OnPointerEnter(PointerEventData eventData) => highlightedIn?.PlaySequence();
+    public void OnPointerExit(PointerEventData eventData) => highlightedOut?.PlaySequence();
     public void OnSelect(BaseEventData eventData) => highlightedIn?.PlaySequence();
     public void OnDeselect(BaseEventData eventData) => highlightedOut?.PlaySequence();
     

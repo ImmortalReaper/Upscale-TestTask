@@ -37,6 +37,7 @@ public class DOTweenSequenceAnimator : MonoBehaviour
     private Sequence currentSequence;
     private Vector3 initialPosition;
     private Vector3 initialLocalPosition;
+    private Vector2 initialAnchoredPosition; // Added for UI
     private Vector3 initialRotation;
     private Vector3 initialLocalRotation;
     private Vector3 initialScale;
@@ -56,6 +57,7 @@ public class DOTweenSequenceAnimator : MonoBehaviour
     private CanvasGroup canvasGroup;
     private Image uiImage;
     private TextMeshProUGUI uiText;
+    private RectTransform rectTransform;
     
     void Start()
     {
@@ -129,8 +131,15 @@ public class DOTweenSequenceAnimator : MonoBehaviour
         initialLocalRotation = transform.localEulerAngles;
         initialScale = transform.localScale;
         
+        // Store initial anchored position for UI elements
+        rectTransform = GetComponent<RectTransform>();
+        if (rectTransform != null)
+        {
+            initialAnchoredPosition = rectTransform.anchoredPosition;
+        }
+        
         // Store initial color/alpha values
-        if (spriteRenderer)
+        if (GetComponent<SpriteRenderer>())
             initialColor = GetComponent<SpriteRenderer>().color;
         else if (GetComponent<Image>())
             initialColor = GetComponent<Image>().color;
@@ -147,6 +156,7 @@ public class DOTweenSequenceAnimator : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
         uiImage = GetComponent<Image>();
         uiText = GetComponent<TextMeshProUGUI>();
+        rectTransform = GetComponent<RectTransform>();
     }
     
     [ContextMenu("Play Sequence")]
@@ -233,6 +243,9 @@ public class DOTweenSequenceAnimator : MonoBehaviour
     Tween CreateTween(DOTweenStep step)
     {
         Transform targetTransform = step.useCustomTarget && step.customTarget != null ? step.customTarget : transform;
+        RectTransform targetRectTransform = step.useCustomTarget && step.customTarget != null ? 
+            step.customTarget.GetComponent<RectTransform>() : rectTransform;
+        
         Tween tween = null;
         
         switch (step.tweenType)
@@ -243,6 +256,13 @@ public class DOTweenSequenceAnimator : MonoBehaviour
                 
             case TweenType.MoveLocal:
                 tween = targetTransform.DOLocalMove(step.targetVector, step.duration);
+                break;
+                
+            case TweenType.MoveAnchor:
+                if (targetRectTransform != null)
+                    tween = targetRectTransform.DOAnchorPos(step.targetVector, step.duration);
+                else if (showDebugLogs)
+                    Debug.LogWarning("MoveAnchor requires RectTransform component!", this);
                 break;
                 
             case TweenType.Rotate:
@@ -271,6 +291,13 @@ public class DOTweenSequenceAnimator : MonoBehaviour
                 
             case TweenType.Shake:
                 tween = targetTransform.DOShakePosition(step.duration, step.targetVector, step.shakeVibrato, step.shakeRandomness, step.shakeFadeOut);
+                break;
+                
+            case TweenType.ShakeAnchor:
+                if (targetRectTransform != null)
+                    tween = targetRectTransform.DOShakeAnchorPos(step.duration, step.targetVector, step.shakeVibrato, step.shakeRandomness, step.shakeFadeOut);
+                else if (showDebugLogs)
+                        Debug.LogWarning("ShakeAnchor requires RectTransform component!", this);
                 break;
         }
         
@@ -384,6 +411,12 @@ public class DOTweenSequenceAnimator : MonoBehaviour
         transform.localEulerAngles = initialLocalRotation;
         transform.localScale = initialScale;
         
+        // Reset anchored position for UI elements
+        if (rectTransform != null)
+        {
+            rectTransform.anchoredPosition = initialAnchoredPosition;
+        }
+        
         // Reset colors/alpha
         if (spriteRenderer != null)
             spriteRenderer.color = initialColor;
@@ -443,6 +476,8 @@ public class DOTweenSequenceAnimator : MonoBehaviour
     void ApplyStepValues(DOTweenStep step)
     {
         Transform targetTransform = step.useCustomTarget && step.customTarget != null ? step.customTarget : transform;
+        RectTransform targetRectTransform = step.useCustomTarget && step.customTarget != null ? 
+            step.customTarget.GetComponent<RectTransform>() : rectTransform;
         
         switch (step.tweenType)
         {
@@ -452,6 +487,11 @@ public class DOTweenSequenceAnimator : MonoBehaviour
                 
             case TweenType.MoveLocal:
                 targetTransform.localPosition = step.targetVector;
+                break;
+                
+            case TweenType.MoveAnchor:
+                if (targetRectTransform != null)
+                    targetRectTransform.anchoredPosition = step.targetVector;
                 break;
                 
             case TweenType.Rotate:
