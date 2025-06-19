@@ -139,7 +139,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 196.38501, y: -129.5306}
-  m_SizeDelta: {x: 192.77, y: 59.0612}
+  m_SizeDelta: {x: 0, y: 59.0612}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &741539985404902047
 MonoBehaviour:
@@ -277,8 +277,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalGroup: {fileID: 295520125217038895}
   disabledGroup: {fileID: 7685248132616631607}
+  highlightedGroup: {fileID: 3690877965432807693}
+  useHighlightedAnimation: 1
   highlightedIn: {fileID: 3047506859291751171}
   highlightedOut: {fileID: 1033678139609022935}
+  useHighlightedGroup: 0
+  useCurrentHighlightedAnimation: 1
+  selectedIn: {fileID: 0}
+  selectedOut: {fileID: 0}
 --- !u!1 &1902040874647117751
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,10 +542,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3906621493385042751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.20501709, y: -0.14229965}
+  m_SizeDelta: {x: 0.40999, y: -0.853}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1033678139609022935
 MonoBehaviour:
@@ -560,7 +566,7 @@ MonoBehaviour:
   sequenceLoopType: 0
   tweenSteps:
   - operation: 0
-    tweenType: 5
+    tweenType: 6
     duration: 0.2
     delay: 0
     easeType: 2
@@ -590,7 +596,7 @@ MonoBehaviour:
     uiText: {fileID: 0}
     textMesh: {fileID: 0}
   - operation: 1
-    tweenType: 1
+    tweenType: 2
     duration: 0.2
     delay: 0
     easeType: 2
@@ -601,7 +607,7 @@ MonoBehaviour:
       m_PostInfinity: 0
       m_RotationOrder: 0
     useCustomCurve: 0
-    targetVector: {x: 300, y: 0, z: 0}
+    targetVector: {x: 300, y: -30, z: 0}
     targetFloat: 0
     targetColor: {r: 0, g: 0, b: 0, a: 0}
     punchVibrato: 0
@@ -1068,7 +1074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 350, y: -29.312218}
+  m_AnchoredPosition: {x: 350, y: -30}
   m_SizeDelta: {x: 59.3699, y: 59.3699}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3288980977849903215
@@ -1093,7 +1099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1449,10 +1455,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3906621493385042751}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.20451355, y: -0.0002117157}
+  m_SizeDelta: {x: 0.409, y: -0.568}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3047506859291751171
 MonoBehaviour:
@@ -1473,7 +1479,7 @@ MonoBehaviour:
   sequenceLoopType: 0
   tweenSteps:
   - operation: 0
-    tweenType: 5
+    tweenType: 6
     duration: 0.2
     delay: 0
     easeType: 3
@@ -1503,7 +1509,7 @@ MonoBehaviour:
     uiText: {fileID: 0}
     textMesh: {fileID: 0}
   - operation: 1
-    tweenType: 1
+    tweenType: 2
     duration: 0.2
     delay: 0
     easeType: 3
@@ -1514,7 +1520,7 @@ MonoBehaviour:
       m_PostInfinity: 0
       m_RotationOrder: 0
     useCustomCurve: 0
-    targetVector: {x: 150, y: 0, z: 0}
+    targetVector: {x: 250, y: -30, z: 0}
     targetFloat: 1
     targetColor: {r: 0, g: 0, b: 0, a: 0}
     punchVibrato: 0
@@ -1670,10 +1676,10 @@ RectTransform:
   - {fileID: 4487443152757263269}
   m_Father: {fileID: 1420156303956216076}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 174.77, y: -29.5306}
-  m_SizeDelta: {x: 0, y: 29.0612}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.20500183, y: 0.18799973}
+  m_SizeDelta: {x: 0.41000366, y: 0.36999893}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4783490721069283687
 MonoBehaviour:
