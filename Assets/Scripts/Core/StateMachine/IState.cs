@@ -1,8 +1,10 @@
+using System.Threading.Tasks;
+
 namespace Core.StateMachine
 {
     public interface IState
     {
-        void Enter();
-        void Exit();
+        public Task Enter();
+        public Task Exit();
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Core.StateMachine
 {
@@ -20,7 +21,7 @@ namespace Core.StateMachine
             }
         }
     
-        public void ChangeState<TTargetState>() where TTargetState : class, TState
+        public async void ChangeState<TTargetState>() where TTargetState : class, TState
         {
             var targetType = typeof(TTargetState);
             if (!_states.TryGetValue(targetType, out var nextState))
@@ -28,10 +29,11 @@ namespace Core.StateMachine
 
             if (_currentState != null && _currentState.GetType() == targetType)
                 return;
-
-            _currentState?.Exit();
+            
+            if (_currentState != null)
+                await _currentState.Exit();
             _currentState = nextState;
-            _currentState.Enter();
+            await _currentState.Enter();
         }
     
         public TTargetState GetCurrentState<TTargetState>() where TTargetState : class, TState
