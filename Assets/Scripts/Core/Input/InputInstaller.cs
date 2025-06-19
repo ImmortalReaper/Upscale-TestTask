@@ -15,7 +15,7 @@ namespace Core.Input
                 .FromInstance(_inputActionAsset)
                 .AsSingle();
         
-            Container.BindInterfacesAndSelfTo<InputService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<InputService>().AsSingle().NonLazy();
         }
     }
 }
