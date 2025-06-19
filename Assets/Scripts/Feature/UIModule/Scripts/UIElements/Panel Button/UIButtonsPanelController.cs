@@ -1,51 +1,88 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIButtonsPanelCobtroller : MonoBehaviour
 {
-    [SerializeField] private List<UIPanelButton> uiButtons = new();
+    [SerializeField] private List<UIPanelButton> panels = new();
+    [SerializeField] private int defaultSelectedIndex = 0;
     
+    private List<UnityAction> _buttonActions = new();
     private int _currentIndex = -1;
-
-    private void Awake()
-    {
-        for (int i = 0; i < uiButtons.Count; i++)
-        {
-            int idx = i;
-            uiButtons[i].UIOnButtonClick.AddListener(() => OnButtonClicked(idx));
-        }
-    }
 
     private void Start()
     {
-        if (uiButtons.Count > 0)
-            OnButtonClicked(0);
+        SubscribeToButtons();
+        if (panels.Count > 0)
+            OnButtonClicked(defaultSelectedIndex);
     }
 
+    private void OnDestroy()
+    {
+        UnsubscribeFromButtons();
+    }
+
+    private void SubscribeToButtons()
+    {
+        UnsubscribeFromButtons();
+        
+        for (int i = 0; i < panels.Count; i++)
+        {
+            int idx = i;
+            UnityAction action = () => OnButtonClicked(idx);
+            
+            panels[i].UIButton.Button.onClick.AddListener(action);
+            _buttonActions.Add(action);
+        }
+    }
+
+    private void UnsubscribeFromButtons()
+    {
+        for (int i = 0; i < panels.Count && i < _buttonActions.Count; i++)
+        {
+            if (panels[i] != null && panels[i].UIButton != null && panels[i].UIButton.Button != null)
+            {
+                panels[i].UIButton.Button.onClick.RemoveListener(_buttonActions[i]);
+            }
+        }
+        _buttonActions.Clear();
+    }
+    
     private void OnButtonClicked(int index)
     {
-        if (index < 0 || index >= uiButtons.Count || index == _currentIndex)
+        if (index < 0 || index >= panels.Count || index == _currentIndex)
             return;
 
         _currentIndex = index;
+        Selectable selectedObject = panels[_currentIndex].UIPanel.GetComponentInChildren<Selectable>();
+        EventSystem.current.SetSelectedGameObject(selectedObject.gameObject);
         RefreshAll();
     }
 
     private void RefreshAll()
     {
-        for (int i = 0; i < uiButtons.Count; i++)
+        bool isActive;
+        for (int i = 0; i < panels.Count; i++)
         {
-            bool isActive = (i == _currentIndex);
+            isActive = (i == _currentIndex);
             
-            SetCanvasGroup(uiButtons[i].UIPanel, isActive);
-            uiButtons[i].UIButton.SetInteractable(!isActive);
+            if (panels[i].UIButton.IsSelected && !isActive)
+                panels[i].UIButton.DeselectButton();
+            
+            if(isActive)
+                panels[i].UIButton.SelectButton();
+            
+            SetCanvasGroup(panels[i].UIPanel, isActive);
+            
         }
     }
 
-    private void SetCanvasGroup(CanvasGroup cg, bool show)
+    private void SetCanvasGroup(CanvasGroup group, bool show)
     {
-        cg.alpha = show ? 1f : 0f;
-        cg.interactable = show;
-        cg.blocksRaycasts = show;
+        group.alpha = show ? 1f : 0f;
+        group.interactable = show;
+        group.blocksRaycasts = show;
     }
 }

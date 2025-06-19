@@ -42,7 +42,7 @@ public class UIButtonStateController : MonoBehaviour,
     public void OnPointerExit(PointerEventData eventData)
     {
         if(useHighlightedAnimation)
-            highlightedIn?.PlaySequence();
+            highlightedOut?.PlaySequence();
         else
             SetCanvasGroup(normalGroup);
     }

@@ -8,11 +8,13 @@ namespace Feature.UIModule.Scripts
     {
         public override void InstallBindings()
         {
-            /*Container.Bind<IUIService>().To<UIService>().AsSingle()
+            Container.Bind<IUIService>().To<UIService>().AsSingle()
                 .WithArguments(new Dictionary<Type, UIConfig> {
-                    { typeof(PlayerUI), new UIConfig(Address.UI.PlayerCanvas, 0) },
-                    { typeof(TraderUI), new UIConfig(Address.UI.TraderCanvas, 1) }
-                });*/
+                    { typeof(TitleScreenUI), new UIConfig(Address.UI.TitleScreen, 0, UIWindowType.Normal) },
+                    { typeof(MainMenuUI), new UIConfig(Address.UI.MainMenu, 1, UIWindowType.Normal) },
+                    { typeof(SettingsUI), new UIConfig(Address.UI.Settings, 2, UIWindowType.Normal) },
+                    { typeof(ScreenTransitionUI), new UIConfig(Address.UI.ScreenTransition, 999, UIWindowType.Popup) }
+                });
         }
     }
 }

@@ -6,7 +6,11 @@ namespace Feature.UIModule.Scripts
     public abstract class BaseUIWindow : MonoBehaviour
     {
         [SerializeField] private GameObject _content;
+        [SerializeField] private GameObject firstSelectable;
+        [SerializeField] private bool backtraced = true;
     
+        public bool Backtraced => backtraced;
+        public GameObject FirstSelectable => firstSelectable;
         public bool IsVisible => _content.activeSelf;
         public event Action<BaseUIWindow> OnShow;
         public event Action<BaseUIWindow> OnHide;

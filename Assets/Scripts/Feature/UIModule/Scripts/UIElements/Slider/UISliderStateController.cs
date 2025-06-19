@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -59,8 +58,10 @@ public class UISliderStateController : MonoBehaviour,
     private void SetCanvasGroup(CanvasGroup active)
     {
         List<CanvasGroup> groups = new List<CanvasGroup> { normalGroup, disabledGroup };
+        
         if (!useHighlightedAnimation)
             groups.Add(highlightedGroup);
+        
         foreach (var group in groups)
         {
             if(group == null) continue;
