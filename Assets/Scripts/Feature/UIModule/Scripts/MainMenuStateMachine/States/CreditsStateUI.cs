@@ -1,16 +1,15 @@
 using System.Threading.Tasks;
 using Feature.UIModule.Scripts;
-using UnityEngine.EventSystems;
 
-public class MainMenuStateUI : IMainMenuState
+public class CreditsStateUI : IMainMenuState
 {
     private ScreenTransitionUI _screenTransitionUI;
     private IUIService _uiService;
     
-    public BaseUIWindow Window => _uiService.TryGet(out MainMenuUI mainMenuUI) ? mainMenuUI : _uiService.Load<MainMenuUI>();
-    public UIConfig WindowConfig => _uiService.GetConfig<MainMenuUI>();
+    public BaseUIWindow Window => _uiService.TryGet(out CreditsUI creditsUI) ? creditsUI : _uiService.Load<CreditsUI>();
+    public UIConfig WindowConfig => _uiService.GetConfig<CreditsUI>();
     
-    public MainMenuStateUI(IUIService uiService)
+    public CreditsStateUI(IUIService uiService)
     {
         _uiService = uiService;
         _screenTransitionUI = _uiService.TryGet(out ScreenTransitionUI screenTransitionUI) ? screenTransitionUI : _uiService.Show<ScreenTransitionUI>();
@@ -18,10 +17,8 @@ public class MainMenuStateUI : IMainMenuState
     
     public Task Enter()
     {
-        MainMenuUI mainMenuUI = _uiService.Show<MainMenuUI>();
-        EventSystem.current.SetSelectedGameObject(mainMenuUI.FirstSelectable);
-        mainMenuUI.PlayMainMenuAnimation();
-        _uiService.Unload<TitleScreenUI>();
+        CreditsUI creditsUI = _uiService.Show<CreditsUI>();
+        creditsUI.PlayCreditsAnimation();
         _screenTransitionUI.PlayFadeOut();
         return Task.CompletedTask;
     }
@@ -31,6 +28,6 @@ public class MainMenuStateUI : IMainMenuState
         _screenTransitionUI.PlayFadeIn();
         while (_screenTransitionUI.FadeInPlaying)
             await Task.Yield();
-        _uiService.Hide<MainMenuUI>();
+        _uiService.Hide<CreditsUI>();
     }
 }

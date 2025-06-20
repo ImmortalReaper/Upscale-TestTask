@@ -1,10 +1,14 @@
 using System.Threading.Tasks;
 using Feature.UIModule.Scripts;
+using UnityEngine.EventSystems;
 
 public class SettingStateUI : IMainMenuState
 {
     private ScreenTransitionUI _screenTransitionUI;
     private IUIService _uiService;
+    
+    public BaseUIWindow Window => _uiService.TryGet(out SettingsUI settingsUI) ? settingsUI : _uiService.Load<SettingsUI>();
+    public UIConfig WindowConfig => _uiService.GetConfig<SettingsUI>();
     
     public SettingStateUI(IUIService uiService)
     {
@@ -14,7 +18,8 @@ public class SettingStateUI : IMainMenuState
     
     public Task Enter()
     {
-        _uiService.Show<SettingsUI>();
+        SettingsUI settingsUI = _uiService.Show<SettingsUI>();
+        EventSystem.current.SetSelectedGameObject(settingsUI.FirstSelectable);
         _screenTransitionUI.PlayFadeOut();
         return Task.CompletedTask;
     }
@@ -22,8 +27,8 @@ public class SettingStateUI : IMainMenuState
     public async Task Exit()
     {
         _screenTransitionUI.PlayFadeIn();
-        //_uiService.Hide<SettingsUI>();
         while (_screenTransitionUI.FadeInPlaying)
             await Task.Yield();
+        _uiService.Hide<SettingsUI>();
     }
 }

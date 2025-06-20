@@ -6,6 +6,9 @@ public class TitleScreenStateUI : IMainMenuState
     private ScreenTransitionUI _screenTransitionUI;
     private IUIService _uiService;
     
+    public BaseUIWindow Window => _uiService.TryGet(out TitleScreenUI titleScreenUI) ? titleScreenUI : _uiService.Load<TitleScreenUI>();
+    public UIConfig WindowConfig => _uiService.GetConfig<TitleScreenUI>();
+    
     public TitleScreenStateUI(IUIService uiService)
     {
         _uiService = uiService;
@@ -25,6 +28,6 @@ public class TitleScreenStateUI : IMainMenuState
         _screenTransitionUI.PlayFadeIn();
         while (_screenTransitionUI.FadeInPlaying)
             await Task.Yield();
-        _uiService.Unload<TitleScreenUI>();
+        _uiService.Hide<TitleScreenUI>();
     }
 }
