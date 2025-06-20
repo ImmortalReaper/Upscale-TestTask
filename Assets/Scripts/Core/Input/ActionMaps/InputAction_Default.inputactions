@@ -15,15 +15,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SubmitAny",
-                    "type": "Button",
-                    "id": "b8b0294f-ca7e-432d-a151-ee7130d152c2",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Submit",
                     "type": "Button",
                     "id": "6378329c-b0dd-4ae1-8589-26b9daaa5fb2",
@@ -332,39 +323,6 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "99da4d72-ab60-4b9d-bd9f-a7e307dc31b5",
-                    "path": "<Keyboard>/anyKey",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": ";Keyboard & Mouse",
-                    "action": "SubmitAny",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "49b8ea11-106a-49c4-b855-47956fc345d2",
-                    "path": "<Gamepad>/*",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "SubmitAny",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5f9ed3ba-2e14-4841-8062-d56a7d8a0c87",
-                    "path": "<Mouse>/*",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": ";Keyboard & Mouse",
-                    "action": "SubmitAny",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
