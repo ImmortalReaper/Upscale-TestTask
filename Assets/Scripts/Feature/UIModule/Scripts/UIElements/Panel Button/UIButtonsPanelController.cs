@@ -1,22 +1,45 @@
+using System;
 using System.Collections.Generic;
+using Core.Input;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 public class UIButtonsPanelCobtroller : MonoBehaviour
 {
     [SerializeField] private List<UIPanelButton> panels = new();
     [SerializeField] private int defaultSelectedIndex = 0;
     
+    private IInputService _inputService;
     private List<UnityAction> _buttonActions = new();
     private int _currentIndex = -1;
 
+    [Inject]
+    public void InjectDependencies(IInputService inputService)
+    {
+        _inputService = inputService;
+    }
+    
     private void Start()
     {
         SubscribeToButtons();
         if (panels.Count > 0)
             OnButtonClicked(defaultSelectedIndex);
+    }
+
+    private void OnEnable()
+    {
+        SelectButton(0);
+        _inputService.UIInputService.OnNext += Next;
+        _inputService.UIInputService.OnPrevious += Previous;
+    }
+
+    private void OnDisable()
+    {
+        _inputService.UIInputService.OnNext -= Next;
+        _inputService.UIInputService.OnPrevious -= Previous;
     }
 
     private void OnDestroy()
@@ -50,7 +73,11 @@ public class UIButtonsPanelCobtroller : MonoBehaviour
         _buttonActions.Clear();
     }
     
-    private void OnButtonClicked(int index)
+    private void OnButtonClicked(int index) => SelectButton(index);
+    private void Next() => SelectButton(_currentIndex + 1);
+    private void Previous() => SelectButton(_currentIndex - 1);
+    
+    private void SelectButton(int index)
     {
         if (index < 0 || index >= panels.Count || index == _currentIndex)
             return;
@@ -60,7 +87,7 @@ public class UIButtonsPanelCobtroller : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(selectedObject.gameObject);
         RefreshAll();
     }
-
+    
     private void RefreshAll()
     {
         bool isActive;

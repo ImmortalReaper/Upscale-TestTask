@@ -30,9 +30,10 @@ public class UIToggleStateController : MonoBehaviour,
     private void OnEnable()
     {
         UpdateVisualState(_toggle.isOn, false);
+        DisableHighlight();
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _toggle.onValueChanged.RemoveListener(HandleToggleValueChanged);
     }
@@ -63,6 +64,13 @@ public class UIToggleStateController : MonoBehaviour,
         inactiveGroup.alpha = 0f;
         inactiveGroup.interactable = false;
         inactiveGroup.blocksRaycasts = false;
+    }
+
+    private void DisableHighlight()
+    {
+        highlightedGroup.alpha = 0f;
+        highlightedGroup.interactable = false;
+        highlightedGroup.blocksRaycasts = false;
     }
     
     public void OnPointerEnter(PointerEventData eventData) => highlightedIn?.PlaySequence();

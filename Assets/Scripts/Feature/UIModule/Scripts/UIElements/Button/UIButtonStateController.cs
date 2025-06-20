@@ -91,9 +91,8 @@ public class UIButtonStateController : MonoBehaviour,
     
     private void SetCanvasGroup(CanvasGroup active)
     {
-        List<CanvasGroup> groups = new List<CanvasGroup> { normalGroup, disabledGroup };
-        if (!useHighlightedAnimation)
-            groups.Add(highlightedGroup);
+        List<CanvasGroup> groups = new List<CanvasGroup> { normalGroup, disabledGroup, highlightedGroup };
+        
         foreach (var g in groups)
         {
             if(g == null) continue;

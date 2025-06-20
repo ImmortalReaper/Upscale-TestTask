@@ -103,6 +103,8 @@ public class UIPanellButtonStateController : MonoBehaviour,
     {
         if (!_button.interactable)
             SetCanvasGroup(disabledGroup);
+        else if(_isSelected)
+            SetCanvasGroup(selectedGroup);
         else
             SetCanvasGroup(normalGroup);
     }

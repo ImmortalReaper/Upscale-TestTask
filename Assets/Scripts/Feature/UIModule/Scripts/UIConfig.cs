@@ -16,7 +16,6 @@ namespace Feature.UIModule.Scripts
     {
         Normal,
         Modal,
-        Popup,
-        PopupWithClose
+        Popup
     }
 }
