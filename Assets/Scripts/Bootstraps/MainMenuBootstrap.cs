@@ -11,6 +11,7 @@ namespace ShootingCar.Bootstraps
         {
             UIModuleInstaller.Install(Container);
             MainMenuStateMachineInstaller.Install(Container);
+            UIBacktraceInstaller.Install(Container);
         }
     }
 }
