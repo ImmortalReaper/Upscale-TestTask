@@ -12,5 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119f2df0175641949a876793ad9ca9c4, type: 3}
   m_Name: Keyboard & Mouse
   m_EditorClassIdentifier: 
-  controllerName: Controller Name
-  items: []
+  items:
+  - hotKeyType: 0
+    itemType: 1
+    itemIcon: {fileID: 0}
+    itemText: ESC
+  - hotKeyType: 1
+    itemType: 1
+    itemIcon: {fileID: 0}
+    itemText: ESC
+  - hotKeyType: 2
+    itemType: 0
+    itemIcon: {fileID: 21300000, guid: 474dbf9f5923d1841af7daeedae8bb4d, type: 3}
+    itemText: 
+  - hotKeyType: 3
+    itemType: 0
+    itemIcon: {fileID: 21300000, guid: 0df60c699cc99c64c91643948eb1360e, type: 3}
+    itemText: 
+  - hotKeyType: 4
+    itemType: 1
+    itemIcon: {fileID: 0}
+    itemText: E
+  - hotKeyType: 5
+    itemType: 1
+    itemIcon: {fileID: 0}
+    itemText: Q
+  - hotKeyType: 6
+    itemType: 1
+    itemIcon: {fileID: 0}
+    itemText: P
+  - hotKeyType: 7
+    itemType: 1
+    itemIcon: {fileID: 0}
+    itemText: O
