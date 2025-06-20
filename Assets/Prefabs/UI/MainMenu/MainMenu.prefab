@@ -568,6 +568,7 @@ MonoBehaviour:
   Options: {fileID: 5666352205945689803}
   Credit: {fileID: 6909844840845227261}
   QuitGame: {fileID: 6382709702199775978}
+  menuAnimation: {fileID: 7083442194069327662}
 --- !u!1001 &5031576801129459698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -804,7 +805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 200590924969085647, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 149.23
+      value: 171.18
       objectReference: {fileID: 0}
     - target: {fileID: 200590924969085647, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.y
@@ -820,11 +821,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1035023032263626657, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_Name
-      value: Continue
+      value: Load Game
       objectReference: {fileID: 0}
     - target: {fileID: 2070051967697466389, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_text
-      value: Continue
+      value: Load Game
       objectReference: {fileID: 0}
     - target: {fileID: 3405448324222142464, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -840,7 +841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4105421884958560490, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 149.23
+      value: 171.18
       objectReference: {fileID: 0}
     - target: {fileID: 4105421884958560490, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.y
@@ -864,7 +865,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4383742023829686591, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 149.23
+      value: 171.18
       objectReference: {fileID: 0}
     - target: {fileID: 4383742023829686591, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.y
@@ -904,7 +905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4861549930309723752, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 185.23
+      value: 207.18
       objectReference: {fileID: 0}
     - target: {fileID: 4861549930309723752, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.y
@@ -940,7 +941,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4861549930309723752, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 192.61499
+      value: 203.59
       objectReference: {fileID: 0}
     - target: {fileID: 4861549930309723752, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -960,7 +961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697592579164939292, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_text
-      value: Continue
+      value: Load Game
       objectReference: {fileID: 0}
     - target: {fileID: 5828810451728630325, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: useHighlightedAnimation
@@ -980,7 +981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7049603108288947940, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 185.23
+      value: 207.18
       objectReference: {fileID: 0}
     - target: {fileID: 7049603108288947940, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_SizeDelta.y
@@ -992,7 +993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7337415465544300205, guid: 5cd15970cfa549a4aa4c3ab058706565, type: 3}
       propertyPath: m_text
-      value: Continue
+      value: Load Game
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

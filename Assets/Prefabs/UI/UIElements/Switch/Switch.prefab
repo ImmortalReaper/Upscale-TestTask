@@ -1307,7 +1307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onGroup: {fileID: 2259589031231646084}
   offGroup: {fileID: 4737299337739121641}
-  highlightedGroup: {fileID: 0}
+  highlightedGroup: {fileID: 1086522218657722821}
   useOnOffAnimations: 1
   onStateAnim: {fileID: 2987383898428780571}
   offStateAnim: {fileID: 3576869271191017666}
