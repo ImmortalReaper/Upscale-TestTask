@@ -1,9 +1,13 @@
 using Core.Input;
 using Feature.UIModule.Scripts;
+using UnityEngine;
 using Zenject;
 
-public class SettingsUI : BaseUIWindow
+public class CreditsUI : BaseUIWindow
 {
+    [Header("Animations")]
+    [SerializeField] private DOTweenSequenceAnimator creditsAnimation;
+    
     private IInputService _inputService;
     private IUIBacktraceService _uiBacktraceService;
     
@@ -27,5 +31,11 @@ public class SettingsUI : BaseUIWindow
     private void OnBackPressed()
     {
         _uiBacktraceService.Back();
+    }
+
+    public void PlayCreditsAnimation()
+    {
+        if (creditsAnimation != null)
+            creditsAnimation.PlaySequence();
     }
 }

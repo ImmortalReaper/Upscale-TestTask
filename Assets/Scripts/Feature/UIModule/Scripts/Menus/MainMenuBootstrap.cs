@@ -11,5 +11,5 @@ public class MainMenuBootstrap : MonoBehaviour
         _mainMenuStateMachine = mainMenuStateMachine;
     }
 
-    private void Start() => _mainMenuStateMachine.ChangeState<TitleScreenStateUI>();
+    private async void Start() => await _mainMenuStateMachine.ChangeState<TitleScreenStateUI>();
 }

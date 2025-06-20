@@ -28,8 +28,8 @@ public class TitleScreenUI : BaseUIWindow
         m_EventListener.Dispose();
     }
 
-    private void HandleSubmit(InputControl button)
+    private async void HandleSubmit(InputControl button)
     {
-        _mainMenuStateMachine.ChangeState<MainMenuStateUI>();
+        await _mainMenuStateMachine.ChangeState<MainMenuStateUI>();
     }
 }

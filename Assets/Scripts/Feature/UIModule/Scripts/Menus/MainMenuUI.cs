@@ -10,6 +10,8 @@ public class MainMenuUI : BaseUIWindow
     [SerializeField] private Button Options;
     [SerializeField] private Button Credit;
     [SerializeField] private Button QuitGame;
+    [Header("Animations")]
+    [SerializeField] private DOTweenSequenceAnimator menuAnimation;
     
     private MainMenuStateMachine _mainMenuStateMachine;
     
@@ -35,18 +37,24 @@ public class MainMenuUI : BaseUIWindow
         QuitGame.onClick.RemoveListener(Application.Quit);
     }
     
-    private void OnLoadGameClicked()
+    public void PlayMainMenuAnimation()
     {
-        //_mainMenuStateMachine.ChangeState<LoadGameStateUI>();
+        if (menuAnimation != null)
+            menuAnimation.PlaySequence();
     }
     
-    private void OnOptionsClicked()
+    private async void OnLoadGameClicked()
     {
-        _mainMenuStateMachine.ChangeState<SettingStateUI>();
+        await _mainMenuStateMachine.ChangeStateModal<LoadGameStateUI>();
+    }
+    
+    private async void OnOptionsClicked()
+    {
+         await _mainMenuStateMachine.ChangeState<SettingStateUI>();
     }
 
-    private void OnCreditClicked()
+    private async void OnCreditClicked()
     {
-        //_mainMenuStateMachine.ChangeState<CreditStateUI>();
+        await _mainMenuStateMachine.ChangeState<CreditsStateUI>();
     }
 }
