@@ -6,10 +6,10 @@ namespace Core.StateMachine
 {
     public class StateMachine<TState> : IDisposable where TState : class, IState
     {
-        private Dictionary<Type, TState> _states;
-        private TState _currentState;
-
-        public void SetStates(List<TState> states)
+        protected Dictionary<Type, TState> _states;
+        protected TState _currentState;
+        
+        public virtual void SetStates(List<TState> states)
         {
             _states = new Dictionary<Type, TState>();
             foreach (var state in states)
@@ -21,7 +21,7 @@ namespace Core.StateMachine
             }
         }
     
-        public async void ChangeState<TTargetState>() where TTargetState : class, TState
+        public virtual async Task ChangeState<TTargetState>() where TTargetState : class, TState
         {
             var targetType = typeof(TTargetState);
             if (!_states.TryGetValue(targetType, out var nextState))
@@ -35,13 +35,27 @@ namespace Core.StateMachine
             _currentState = nextState;
             await _currentState.Enter();
         }
-    
-        public TTargetState GetCurrentState<TTargetState>() where TTargetState : class, TState
+        
+        public virtual async Task ChangeState(TState targetState)
+        {
+            if (targetState == null)
+                throw new ArgumentNullException(nameof(targetState), "Target state cannot be null.");
+
+            if (_currentState != null && _currentState.GetType() == targetState.GetType())
+                return;
+
+            if (_currentState != null)
+                await _currentState.Exit();
+            _currentState = targetState;
+            await _currentState.Enter();
+        }
+        
+        public virtual TTargetState GetCurrentState<TTargetState>() where TTargetState : class, TState
         {
             return _currentState as TTargetState;
         }
 
-        public TState GetCurrentState()
+        public virtual TState GetCurrentState()
         {
             return _currentState;
         }
