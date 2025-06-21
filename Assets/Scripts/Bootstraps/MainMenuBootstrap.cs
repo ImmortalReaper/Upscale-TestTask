@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Bootstraps
 {
-    [CreateAssetMenu(fileName = "GameplayBootstrap", menuName = "Installers/GameplayBootstrap")]
+    [CreateAssetMenu(fileName = "MainMenuBootstrap", menuName = "Installers/MainMenuBootstrap")]
     public class MainMenuBootstrap : ScriptableObjectInstaller<MainMenuBootstrap>
     {
         public override void InstallBindings()
@@ -14,6 +14,7 @@ namespace Bootstraps
             UIModuleInstaller.Install(Container);
             MainMenuStateMachineInstaller.Install(Container);
             UIBacktraceInstaller.Install(Container);
+            AudioInstaller.Install(Container);
         }
     }
 }
