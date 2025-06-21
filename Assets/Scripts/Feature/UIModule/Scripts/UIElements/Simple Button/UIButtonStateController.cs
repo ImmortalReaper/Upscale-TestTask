@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using Core.Audio.Scripts;
 using Feature.AnimationModule.Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using Zenject;
 using CanvasGroup = UnityEngine.CanvasGroup;
 
-namespace Feature.UIModule.Scripts.UIElements.Button
+namespace Feature.UIModule.Scripts.UIElements.Simple_Button
 {
-    [RequireComponent(typeof(UnityEngine.UI.Button))]
+    [RequireComponent(typeof(Button))]
     public class UIButtonStateController : MonoBehaviour, 
         IPointerEnterHandler, IPointerExitHandler, 
         ISelectHandler, IDeselectHandler
@@ -25,13 +28,29 @@ namespace Feature.UIModule.Scripts.UIElements.Button
         [SerializeField] private DOTweenSequenceAnimator selectedIn;
         [SerializeField] private DOTweenSequenceAnimator selectedOut;
 
-        private UnityEngine.UI.Button _button;
+        private IAudioService _audioService;
+        private Button _button;
 
-        public UnityEngine.UI.Button UIButton => _button;
-    
-        private void Awake() => _button = GetComponent<UnityEngine.UI.Button>();
+        public Button UIButton => _button;
 
-        private void OnEnable() => UpdateState();
+        [Inject]
+        public void InjectDependencies(IAudioService audioService)
+        {
+            _audioService = audioService;
+        }
+        
+        private void Awake() => _button = GetComponent<Button>();
+
+        private void OnEnable()
+        {
+            UpdateState();
+            _button.onClick.AddListener(OnClick);
+        }
+
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnClick);
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -39,6 +58,7 @@ namespace Feature.UIModule.Scripts.UIElements.Button
                 highlightedIn?.PlaySequence();
             else
                 SetCanvasGroup(highlightedGroup);
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -51,6 +71,7 @@ namespace Feature.UIModule.Scripts.UIElements.Button
 
         public void OnSelect(BaseEventData eventData)
         {
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
             if (useHighlightedGroup)
             {
                 SetCanvasGroup(highlightedGroup);
@@ -77,6 +98,11 @@ namespace Feature.UIModule.Scripts.UIElements.Button
                 selectedOut?.PlaySequence();
         }
 
+        public void OnClick()
+        {
+            _audioService.PlayOneShot(_audioService.SFXConfig.ClickUI, Vector3.zero);
+        }
+        
         public void SetInteractable(bool interactable)
         {
             _button.interactable = interactable;

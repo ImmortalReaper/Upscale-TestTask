@@ -1,11 +1,14 @@
 using System.Collections.Generic;
+using Core.Audio.Scripts;
 using Feature.AnimationModule.Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using Zenject;
 
 namespace Feature.UIModule.Scripts.UIElements.Panel_Button
 {
-    [RequireComponent(typeof(UnityEngine.UI.Button))]
+    [RequireComponent(typeof(Button))]
     public class UIPanellButtonStateController : MonoBehaviour, 
         IPointerEnterHandler, IPointerExitHandler
     {
@@ -25,15 +28,31 @@ namespace Feature.UIModule.Scripts.UIElements.Panel_Button
         public DOTweenSequenceAnimator selectedIn;
         public DOTweenSequenceAnimator selectedOut;
 
-        private UnityEngine.UI.Button _button;
+        private IAudioService _audioService;
+        private Button _button;
         private bool _isSelected = false;
 
-        public UnityEngine.UI.Button Button => _button;
+        public Button Button => _button;
         public bool IsSelected => _isSelected;
     
-        private void Awake() => _button = GetComponent<UnityEngine.UI.Button>();
+        [Inject]
+        public void InjectDependencies(IAudioService audioService)
+        {
+            _audioService = audioService;
+        }
+        
+        private void Awake() => _button = GetComponent<Button>();
 
-        private void OnEnable() => UpdateState();
+        private void OnEnable()
+        {
+            UpdateState();
+            _button.onClick.AddListener(OnClick);
+        }
+
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnClick);
+        }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
@@ -42,6 +61,7 @@ namespace Feature.UIModule.Scripts.UIElements.Panel_Button
                 highlightedIn?.PlaySequence();
             else
                 SetCanvasGroup(highlightedGroup);
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -77,7 +97,7 @@ namespace Feature.UIModule.Scripts.UIElements.Panel_Button
         public void SelectButton()
         {
             if(_isSelected) return;
-        
+            _audioService.PlayOneShot(_audioService.SFXConfig.ClickUI, Vector3.zero);
             if (useHighlightedGroupForSelection)
             {
                 SetCanvasGroup(highlightedGroup);
@@ -91,10 +111,14 @@ namespace Feature.UIModule.Scripts.UIElements.Panel_Button
                 selectedIn?.PlaySequence();
             else
                 SetCanvasGroup(selectedGroup);
-        
             _isSelected = true;
         }
     
+        public void OnClick()
+        {
+            _audioService.PlayOneShot(_audioService.SFXConfig.ClickUI, Vector3.zero);
+        }
+        
         public void SetInteractable(bool interactable)
         {
             _button.interactable = interactable;

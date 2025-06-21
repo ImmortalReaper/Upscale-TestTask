@@ -1,12 +1,15 @@
 using System.Collections.Generic;
+using Core.Audio.Scripts;
 using Feature.AnimationModule.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using Zenject;
 
-namespace Feature.UIModule.Scripts.UIElements.Slider
+namespace Feature.UIModule.Scripts.UIElements.Simple_Slider
 {
-    [RequireComponent(typeof(UnityEngine.UI.Slider))]
+    [RequireComponent(typeof(Slider))]
     public class UISliderStateController : MonoBehaviour,
         IPointerEnterHandler, IPointerExitHandler,
         ISelectHandler, IDeselectHandler
@@ -22,11 +25,18 @@ namespace Feature.UIModule.Scripts.UIElements.Slider
         [Header("Text")]
         [SerializeField] private TextMeshProUGUI valueText;
 
-        private UnityEngine.UI.Slider _slider;
+        private IAudioService _audioService;
+        private Slider _slider;
 
+        [Inject]
+        public void InjectDependencies(IAudioService audioService)
+        {
+            _audioService = audioService;
+        }
+        
         private void Awake()
         {
-            _slider = GetComponent<UnityEngine.UI.Slider>();
+            _slider = GetComponent<Slider>();
             _slider.onValueChanged.AddListener(UpdateValueText);
         }
 
@@ -39,6 +49,7 @@ namespace Feature.UIModule.Scripts.UIElements.Slider
 
         private void UpdateValueText(float value)
         {
+            _audioService.PlayOneShot(_audioService.SFXConfig.ClickUI, Vector3.zero);
             if (valueText != null)
                 valueText.text = value.ToString("F2");
         }
@@ -80,6 +91,7 @@ namespace Feature.UIModule.Scripts.UIElements.Slider
                 highlightedIn?.PlaySequence();
             else
                 SetCanvasGroup(highlightedGroup);
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -96,6 +108,7 @@ namespace Feature.UIModule.Scripts.UIElements.Slider
                 highlightedIn?.PlaySequence();
             else
                 SetCanvasGroup(highlightedGroup);
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
         }
 
         public void OnDeselect(BaseEventData eventData)

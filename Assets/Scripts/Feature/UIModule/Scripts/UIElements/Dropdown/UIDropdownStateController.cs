@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Core.Audio.Scripts;
 using Feature.AnimationModule.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 namespace Feature.UIModule.Scripts.UIElements.Dropdown
 {
@@ -22,11 +24,18 @@ namespace Feature.UIModule.Scripts.UIElements.Dropdown
         [SerializeField] private DOTweenSequenceAnimator highlightedIn;
         [SerializeField] private DOTweenSequenceAnimator highlightedOut;
 
+        private IAudioService _audioService;
         private TMP_Dropdown _dropdown;
 
         public TMP_Dropdown Dropdown => _dropdown;
         public Action<int> onDropdownValueChanged;
 
+        [Inject]
+        public void InjectDependencies(IAudioService audioService)
+        {
+            _audioService = audioService;
+        }
+        
         private void Awake()
         {
             _dropdown = GetComponent<TMP_Dropdown>();
@@ -45,6 +54,7 @@ namespace Feature.UIModule.Scripts.UIElements.Dropdown
 
         private void OnValueChanged(int index)
         {
+            _audioService.PlayOneShot(_audioService.SFXConfig.ClickUI, Vector3.zero);
             onDropdownValueChanged?.Invoke(index);
         }
 
@@ -83,6 +93,7 @@ namespace Feature.UIModule.Scripts.UIElements.Dropdown
                 highlightedIn?.PlaySequence();
             else
                 SetCanvasGroup(highlightedGroup);
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
         }
 
         public void OnDeselect(BaseEventData eventData)
@@ -99,6 +110,7 @@ namespace Feature.UIModule.Scripts.UIElements.Dropdown
                 highlightedIn?.PlaySequence();
             else
                 SetCanvasGroup(highlightedGroup);
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
         }
 
         public void OnPointerExit(PointerEventData eventData)

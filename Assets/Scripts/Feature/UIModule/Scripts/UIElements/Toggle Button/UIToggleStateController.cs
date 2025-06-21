@@ -1,7 +1,9 @@
+using Core.Audio.Scripts;
 using Feature.AnimationModule.Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Feature.UIModule.Scripts.UIElements.Toggle_Button
 {
@@ -22,8 +24,15 @@ namespace Feature.UIModule.Scripts.UIElements.Toggle_Button
         [SerializeField] private DOTweenSequenceAnimator highlightedIn;
         [SerializeField] private DOTweenSequenceAnimator highlightedOut;
 
+        private IAudioService _audioService;
         private Toggle _toggle;
 
+        [Inject]
+        public void InjectDependencies(IAudioService audioService)
+        {
+            _audioService = audioService;
+        }
+        
         private void Awake()
         {
             _toggle = GetComponent<Toggle>();
@@ -43,6 +52,7 @@ namespace Feature.UIModule.Scripts.UIElements.Toggle_Button
 
         private void HandleToggleValueChanged(bool isOn)
         {
+            _audioService.PlayOneShot(_audioService.SFXConfig.ClickUI, Vector3.zero);
             UpdateVisualState(isOn, true);
         }
 
@@ -76,9 +86,17 @@ namespace Feature.UIModule.Scripts.UIElements.Toggle_Button
             highlightedGroup.blocksRaycasts = false;
         }
     
-        public void OnPointerEnter(PointerEventData eventData) => highlightedIn?.PlaySequence();
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            highlightedIn?.PlaySequence();
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
+        }
         public void OnPointerExit(PointerEventData eventData) => highlightedOut?.PlaySequence();
-        public void OnSelect(BaseEventData eventData) => highlightedIn?.PlaySequence();
+        public void OnSelect(BaseEventData eventData)
+        {
+            highlightedIn?.PlaySequence();
+            _audioService.PlayOneShot(_audioService.SFXConfig.HoverUI, Vector3.zero);
+        }
         public void OnDeselect(BaseEventData eventData) => highlightedOut?.PlaySequence();
     
         public void SetInteractable(bool interactable)
