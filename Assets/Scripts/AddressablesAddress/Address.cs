@@ -15,6 +15,8 @@ namespace AddressablesAddress
         public static class Configs
         {
             public const string PresetManager = "PresetManager";
+            public const string MusicConfig = "MusicConfig";
+            public const string SFXConfig = "SFXConfig";
         }
     }
 }
