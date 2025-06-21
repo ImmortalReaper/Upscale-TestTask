@@ -1,8 +1,11 @@
 using System;
 
-[Serializable]
-public enum StepOperation
+namespace Feature.AnimationModule.Scripts
 {
-    Append,
-    Join
+    [Serializable]
+    public enum StepOperation
+    {
+        Append,
+        Join
+    }
 }

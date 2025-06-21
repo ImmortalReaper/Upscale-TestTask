@@ -1,17 +1,20 @@
 using System;
 
-[Serializable]
-public enum TweenType
+namespace Feature.AnimationModule.Scripts
 {
-    Move,
-    MoveLocal,
-    MoveAnchor,
-    Rotate,
-    RotateLocal,
-    Scale,
-    Fade,
-    Color,
-    Punch,
-    Shake,
-    ShakeAnchor 
+    [Serializable]
+    public enum TweenType
+    {
+        Move,
+        MoveLocal,
+        MoveAnchor,
+        Rotate,
+        RotateLocal,
+        Scale,
+        Fade,
+        Color,
+        Punch,
+        Shake,
+        ShakeAnchor 
+    }
 }

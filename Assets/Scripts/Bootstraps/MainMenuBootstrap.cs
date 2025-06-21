@@ -1,8 +1,10 @@
 using Feature.UIModule.Scripts;
+using Feature.UIModule.Scripts.BacktraceService;
+using Feature.UIModule.Scripts.MainMenuStateMachine;
 using UnityEngine;
 using Zenject;
 
-namespace ShootingCar.Bootstraps
+namespace Bootstraps
 {
     [CreateAssetMenu(fileName = "GameplayBootstrap", menuName = "Installers/GameplayBootstrap")]
     public class MainMenuBootstrap : ScriptableObjectInstaller<MainMenuBootstrap>

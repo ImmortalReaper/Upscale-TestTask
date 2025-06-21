@@ -1,30 +1,33 @@
 using System.Threading.Tasks;
-using Feature.UIModule.Scripts;
+using Feature.UIModule.Scripts.Menus;
 using UnityEngine.EventSystems;
 
-public class LoadGameStateUI : IMainMenuState
+namespace Feature.UIModule.Scripts.MainMenuStateMachine.States
 {
-    private IUIService _uiService;
-    
-    public BaseUIWindow Window => _uiService.TryGet(out LoadGameUI loadGameUI) ? loadGameUI : _uiService.Load<LoadGameUI>();
-    public UIConfig WindowConfig => _uiService.GetConfig<LoadGameUI>();
-    
-    public LoadGameStateUI(IUIService uiService)
+    public class LoadGameStateUI : IMainMenuState
     {
-        _uiService = uiService;
-    }
+        private IUIService _uiService;
     
-    public Task Enter()
-    {
-        LoadGameUI loadGameUI = _uiService.Show<LoadGameUI>();
-        EventSystem.current.SetSelectedGameObject(loadGameUI.FirstSelectable);
-        loadGameUI.PlayShowLoadGameAnimation(loadGameUI);
-        return Task.CompletedTask;
-    }
+        public BaseUIWindow Window => _uiService.TryGet(out LoadGameUI loadGameUI) ? loadGameUI : _uiService.Load<LoadGameUI>();
+        public UIConfig WindowConfig => _uiService.GetConfig<LoadGameUI>();
+    
+        public LoadGameStateUI(IUIService uiService)
+        {
+            _uiService = uiService;
+        }
+    
+        public Task Enter()
+        {
+            LoadGameUI loadGameUI = _uiService.Show<LoadGameUI>();
+            EventSystem.current.SetSelectedGameObject(loadGameUI.FirstSelectable);
+            loadGameUI.PlayShowLoadGameAnimation(loadGameUI);
+            return Task.CompletedTask;
+        }
 
-    public Task Exit()
-    {
-        _uiService.Hide<LoadGameUI>();
-        return Task.CompletedTask;
+        public Task Exit()
+        {
+            _uiService.Hide<LoadGameUI>();
+            return Task.CompletedTask;
+        }
     }
 }

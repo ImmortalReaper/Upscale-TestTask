@@ -1,33 +1,37 @@
 using System.Threading.Tasks;
-using Feature.UIModule.Scripts;
+using Feature.UIModule.Scripts.Menus;
+using Feature.UIModule.Scripts.ScreenTransition;
 
-public class TitleScreenStateUI : IMainMenuState
+namespace Feature.UIModule.Scripts.MainMenuStateMachine.States
 {
-    private ScreenTransitionUI _screenTransitionUI;
-    private IUIService _uiService;
-    
-    public BaseUIWindow Window => _uiService.TryGet(out TitleScreenUI titleScreenUI) ? titleScreenUI : _uiService.Load<TitleScreenUI>();
-    public UIConfig WindowConfig => _uiService.GetConfig<TitleScreenUI>();
-    
-    public TitleScreenStateUI(IUIService uiService)
+    public class TitleScreenStateUI : IMainMenuState
     {
-        _uiService = uiService;
-    }
+        private ScreenTransitionUI _screenTransitionUI;
+        private IUIService _uiService;
     
-    public Task Enter()
-    {
-        _uiService.Show<TitleScreenUI>();
-        _uiService.Load<MainMenuUI>();
-        _screenTransitionUI = _uiService.Show<ScreenTransitionUI>();
-        _screenTransitionUI.PlayFadeOut();
-        return Task.CompletedTask;
-    }
+        public BaseUIWindow Window => _uiService.TryGet(out TitleScreenUI titleScreenUI) ? titleScreenUI : _uiService.Load<TitleScreenUI>();
+        public UIConfig WindowConfig => _uiService.GetConfig<TitleScreenUI>();
+    
+        public TitleScreenStateUI(IUIService uiService)
+        {
+            _uiService = uiService;
+        }
+    
+        public Task Enter()
+        {
+            _uiService.Show<TitleScreenUI>();
+            _uiService.Load<MainMenuUI>();
+            _screenTransitionUI = _uiService.Show<ScreenTransitionUI>();
+            _screenTransitionUI.PlayFadeOut();
+            return Task.CompletedTask;
+        }
 
-    public async Task Exit()
-    {
-        _screenTransitionUI.PlayFadeIn();
-        while (_screenTransitionUI.FadeInPlaying)
-            await Task.Yield();
-        _uiService.Hide<TitleScreenUI>();
+        public async Task Exit()
+        {
+            _screenTransitionUI.PlayFadeIn();
+            while (_screenTransitionUI.FadeInPlaying)
+                await Task.Yield();
+            _uiService.Hide<TitleScreenUI>();
+        }
     }
 }

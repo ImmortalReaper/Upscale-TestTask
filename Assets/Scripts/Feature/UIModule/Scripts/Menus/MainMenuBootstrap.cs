@@ -1,33 +1,22 @@
-using System;
+using Feature.UIModule.Scripts.MainMenuStateMachine.States;
 using UnityEngine;
 using Zenject;
 
-public class MainMenuBootstrap : MonoBehaviour
+namespace Feature.UIModule.Scripts.Menus
 {
-    private MainMenuStateMachine _mainMenuStateMachine;
-    private IInputDeviceService _inputDeviceService;
+    public class MainMenuBootstrap : MonoBehaviour
+    {
+        private MainMenuStateMachine.MainMenuStateMachine _mainMenuStateMachine;
     
-    [Inject]
-    public void InjectDependencies(MainMenuStateMachine mainMenuStateMachine, IInputDeviceService inputDeviceService)
-    {
-        _inputDeviceService = inputDeviceService;
-        _mainMenuStateMachine = mainMenuStateMachine;
-    }
+        [Inject]
+        public void InjectDependencies(MainMenuStateMachine.MainMenuStateMachine mainMenuStateMachine)
+        {
+            _mainMenuStateMachine = mainMenuStateMachine;
+        }
     
-    private async void Start()
-    {
-        await _mainMenuStateMachine.ChangeState<TitleScreenStateUI>();
-        _inputDeviceService.OnDeviceChanged += HandleInputDeviceChanged;
-        Debug.Log(_inputDeviceService.CurrentDevice);
-    }
-
-    private void OnDestroy()
-    {
-        _inputDeviceService.OnDeviceChanged -= HandleInputDeviceChanged;
-    }
-
-    private void HandleInputDeviceChanged(ActiveInputDevice obj)
-    {
-        Debug.Log(_inputDeviceService.CurrentDevice);
+        private async void Start()
+        {
+            await _mainMenuStateMachine.ChangeState<TitleScreenStateUI>();
+        }
     }
 }

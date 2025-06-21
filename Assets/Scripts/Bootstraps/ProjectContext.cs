@@ -2,7 +2,7 @@ using Core.AssetLoader;
 using UnityEngine;
 using Zenject;
 
-namespace ShootingCar.Bootstraps
+namespace Bootstraps
 {
     [CreateAssetMenu(fileName = "ProjectContext", menuName = "Installers/ProjectContext")]
     public class ProjectContext : ScriptableObjectInstaller<ProjectContext>

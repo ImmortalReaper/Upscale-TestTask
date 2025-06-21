@@ -1,17 +1,20 @@
 using System.Collections.Generic;
+using Feature.UIModule.Scripts.MainMenuStateMachine.States;
 using Zenject;
 
-public class MainMenuStateMachineInstaller : Installer<MainMenuStateMachineInstaller>
+namespace Feature.UIModule.Scripts.MainMenuStateMachine
 {
-    public override void InstallBindings()
+    public class MainMenuStateMachineInstaller : Installer<MainMenuStateMachineInstaller>
     {
-        Container.Bind<TitleScreenStateUI>().AsSingle();
-        Container.Bind<MainMenuStateUI>().AsSingle();
-        Container.Bind<SettingStateUI>().AsSingle();
-        Container.Bind<CreditsStateUI>().AsSingle();
-        Container.Bind<LoadGameStateUI>().AsSingle();
+        public override void InstallBindings()
+        {
+            Container.Bind<TitleScreenStateUI>().AsSingle();
+            Container.Bind<MainMenuStateUI>().AsSingle();
+            Container.Bind<SettingStateUI>().AsSingle();
+            Container.Bind<CreditsStateUI>().AsSingle();
+            Container.Bind<LoadGameStateUI>().AsSingle();
         
-        Container.Bind<MainMenuStateMachine>().AsSingle()
+            Container.Bind<MainMenuStateMachine>().AsSingle()
                 .OnInstantiated<MainMenuStateMachine>((ctx, stateMachine) =>
                 {
                     IMainMenuState title = ctx.Container.Resolve<TitleScreenStateUI>();
@@ -24,5 +27,6 @@ public class MainMenuStateMachineInstaller : Installer<MainMenuStateMachineInsta
 
                     stateMachine.SetStates(states);
                 });
+        }
     }
 }

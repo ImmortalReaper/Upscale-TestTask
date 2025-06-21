@@ -1,9 +1,12 @@
 using Core.Installer;
 
-public class UIBacktraceInstaller : Installer<UIBacktraceInstaller>
+namespace Feature.UIModule.Scripts.BacktraceService
 {
-    public override void InstallBindings()
+    public class UIBacktraceInstaller : Installer<UIBacktraceInstaller>
     {
-        Container.BindInterfacesAndSelfTo<UIBacktraceService>().AsSingle();
+        public override void InstallBindings()
+        {
+            Container.BindInterfacesAndSelfTo<UIBacktraceService>().AsSingle();
+        }
     }
 }
