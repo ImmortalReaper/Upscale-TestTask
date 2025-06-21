@@ -1,5 +1,10 @@
 using System;
 using System.Collections.Generic;
+using AddressablesAddress;
+using Core.AssetLoader;
+using Feature.ControllerPresets.Scripts;
+using Feature.UIModule.Scripts.Menus;
+using Feature.UIModule.Scripts.ScreenTransition;
 using Zenject;
 
 namespace Feature.UIModule.Scripts
@@ -8,6 +13,11 @@ namespace Feature.UIModule.Scripts
     {
         public override void InstallBindings()
         {
+            IAddressablesAssetLoaderService addressablesAssetLoaderService = Container.Resolve<IAddressablesAssetLoaderService>();
+            Container.Bind<PresetManager>()
+                .FromScriptableObject(addressablesAssetLoaderService.LoadAsset<PresetManager>(Address.Configs.PresetManager))
+                .AsSingle();
+
             Container.Bind<IUIService>().To<UIService>().AsSingle()
                 .WithArguments(new Dictionary<Type, UIConfig> {
                     { typeof(TitleScreenUI), new UIConfig(Address.UI.TitleScreen, 0, UIWindowType.Normal) },
