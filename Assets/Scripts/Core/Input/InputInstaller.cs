@@ -16,6 +16,7 @@ namespace Core.Input
                 .AsSingle();
         
             Container.BindInterfacesAndSelfTo<InputService>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<InputDeviceService>().AsSingle();
         }
     }
 }
