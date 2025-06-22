@@ -56,9 +56,9 @@ namespace Feature.UIModule.Scripts.UIElements.Toggle_Button
             UpdateVisualState(isOn, true);
         }
 
-        private void UpdateVisualState(bool isOn, bool playAnim)
+        private void UpdateVisualState(bool isOn, bool playAnimation)
         {
-            if (useOnOffAnimations && playAnim)
+            if (useOnOffAnimations && playAnimation)
             {
                 if (isOn)  
                     onStateAnim.PlaySequence();

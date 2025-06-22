@@ -121,13 +121,13 @@ namespace Feature.UIModule.Scripts.UIElements.Simple_Button
         {
             List<CanvasGroup> groups = new List<CanvasGroup> { normalGroup, disabledGroup, highlightedGroup };
         
-            foreach (var g in groups)
+            foreach (var group in groups)
             {
-                if(g == null) continue;
-                bool isActive = (g == active);
-                g.alpha = isActive ? 1f : 0f;
-                g.blocksRaycasts = isActive;
-                g.interactable = isActive;
+                if(group == null) continue;
+                bool isActive = (group == active);
+                group.alpha = isActive ? 1f : 0f;
+                group.blocksRaycasts = isActive;
+                group.interactable = isActive;
             }
         }
     }
