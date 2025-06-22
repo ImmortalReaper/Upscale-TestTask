@@ -1,1 +1,12 @@
-https://drive.google.com/file/d/1Pk_miuKBggSq5SIiwHKCLoeHZS9sEDgC/view?usp=sharing
+## Використані ассети
+
+* **HeatUI** – у проекті використані лише візуальні та звукові ресурси цього ассету.
+
+## Моя робота
+
+Усі скрипти, логіку й анімації інтерфейсу розроблено мною самостійно.
+
+## Демонстрація
+
+Переглянути відео-демонстрацію можна за посиланням:
+[Відео демонстрація](https://drive.google.com/file/d/1Pk_miuKBggSq5SIiwHKCLoeHZS9sEDgC/view?usp=sharing)
