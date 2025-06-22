@@ -22,7 +22,8 @@ namespace Core.Input
         private InputAction _PreviousAltAction;
         private InputAction _SubmitAction;
         private InputAction _CancelAction;
-    
+
+        public event Action<InputDevice> OnInputDeviceUpdate;
         public event Action OnNext;
         public event Action OnPrevious;
         public event Action OnNextAlt;
@@ -70,37 +71,55 @@ namespace Core.Input
         private void OnCancelPerformed(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
                 OnCancel?.Invoke();
+                OnInputDeviceUpdate?.Invoke(context.control.device);
+            }
         }
 
         private void OnSubmitPerformed(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
                 OnSubmit?.Invoke();
+                OnInputDeviceUpdate?.Invoke(context.control.device);
+            }
         }
 
         private void OnNextPerformed(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
                 OnNext?.Invoke();
+                OnInputDeviceUpdate?.Invoke(context.control.device);
+            }
         }
 
         private void OnPreviousPerformed(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
+                OnInputDeviceUpdate?.Invoke(context.control.device);
                 OnPrevious?.Invoke();
+            }
         }
 
         private void OnNextAltPerformed(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
                 OnNextAlt?.Invoke();
+                OnInputDeviceUpdate?.Invoke(context.control.device);
+            }
         }
 
         private void OnPreviousAltPerformed(InputAction.CallbackContext context)
         {
             if (context.performed)
+            {
                 OnPreviousAlt?.Invoke();
+                OnInputDeviceUpdate?.Invoke(context.control.device);
+            }
         }
 
         public void Enable() => _uiActionMap.Enable();

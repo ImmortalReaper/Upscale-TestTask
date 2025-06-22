@@ -22,7 +22,8 @@ namespace Core.Input
     
         public void Initialize()
         {
-            _inputService.OnDeviceChanged += HandleControlsChanged;
+            _inputService.OnDeviceChanged += HandleDeviceChange;
+            _inputService.OnInputDeviceUpdate += UpdateDevice;
         
             if(_inputService.Devices.Count > 0)
                 UpdateDevice(_inputService.Devices.Last());
@@ -32,10 +33,11 @@ namespace Core.Input
     
         public void Dispose()
         {
-            _inputService.OnDeviceChanged -= HandleControlsChanged;
+            _inputService.OnDeviceChanged -= HandleDeviceChange;
+            _inputService.OnInputDeviceUpdate -= UpdateDevice;
         }
     
-        private void HandleControlsChanged(InputDevice inputDevice, InputDeviceChange change)
+        private void HandleDeviceChange(InputDevice inputDevice, InputDeviceChange change)
         {
             switch (change)
             {

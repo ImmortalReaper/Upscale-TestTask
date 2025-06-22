@@ -1,9 +1,11 @@
 using System;
+using UnityEngine.InputSystem;
 
 namespace Core.Input
 {
     public interface IUIInputService
     {
+        public event Action<InputDevice> OnInputDeviceUpdate;
         public event Action OnNext;
         public event Action OnPrevious;
         public event Action OnNextAlt;

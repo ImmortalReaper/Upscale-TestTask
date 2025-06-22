@@ -17,6 +17,7 @@ namespace Core.Input
         public ReadOnlyArray<InputDevice> Devices => _playerInput.devices;
         public string CurrentControlScheme => _playerInput.currentControlScheme;
         public event Action<InputDevice, InputDeviceChange> OnDeviceChanged;
+        public event Action<InputDevice> OnInputDeviceUpdate; 
 
         public InputService(InputActionAsset inputActionAsset)
         {
@@ -28,13 +29,16 @@ namespace Core.Input
             CreatePlayerInput();
             InputSystem.onDeviceChange += OnDeviceChange;
             _inputActions.Enable();
+            
             _uiInputService = new UIInputService(_inputActions);
             _uiInputService.Initialize();
+            _uiInputService.OnInputDeviceUpdate += InputDeviceUpdate;
         }
 
         public void Dispose()
         {
             InputSystem.onDeviceChange -= OnDeviceChange;
+            _uiInputService.OnInputDeviceUpdate -= InputDeviceUpdate;
             _inputActions.Disable();
             _uiInputService?.Dispose();
             if(_playerInput != null)
@@ -46,6 +50,11 @@ namespace Core.Input
             OnDeviceChanged?.Invoke(device, change);
         }
 
+        private void InputDeviceUpdate(InputDevice device)
+        {
+            OnInputDeviceUpdate?.Invoke(device);
+        }
+        
         private void CreatePlayerInput()
         {
             GameObject playerInputGO = new GameObject("PlayerInput");

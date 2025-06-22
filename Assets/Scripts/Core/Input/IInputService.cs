@@ -9,6 +9,7 @@ namespace Core.Input
         public IUIInputService UIInputService { get; }
         public ReadOnlyArray<InputDevice> Devices { get; }
         public string CurrentControlScheme { get; }
+        public event Action<InputDevice> OnInputDeviceUpdate;
         public event Action<InputDevice, InputDeviceChange> OnDeviceChanged;
     }
 }
