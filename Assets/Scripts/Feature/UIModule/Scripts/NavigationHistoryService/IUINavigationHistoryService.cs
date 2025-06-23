@@ -1,6 +1,6 @@
-namespace Feature.UIModule.Scripts.BacktraceService
+namespace Feature.UIModule.Scripts.NavigationHistoryService
 {
-    public interface IUIBacktraceService
+    public interface IUINavigationHistoryService
     {
         public bool HasActiveModals { get; }
         public void Back();

@@ -1,6 +1,7 @@
+using Core.Audio.Scripts;
 using Feature.UIModule.Scripts;
-using Feature.UIModule.Scripts.BacktraceService;
-using Feature.UIModule.Scripts.MainMenuStateMachine;
+using Feature.UIModule.Scripts.MenuStateMachine;
+using Feature.UIModule.Scripts.NavigationHistoryService;
 using UnityEngine;
 using Zenject;
 
@@ -13,7 +14,7 @@ namespace Bootstraps
         {
             UIModuleInstaller.Install(Container);
             MainMenuStateMachineInstaller.Install(Container);
-            UIBacktraceInstaller.Install(Container);
+            UINavigationHistoryInstaller.Install(Container);
             AudioInstaller.Install(Container);
         }
     }

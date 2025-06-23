@@ -3,7 +3,7 @@ using Feature.UIModule.Scripts.Menus;
 using Feature.UIModule.Scripts.ScreenTransition;
 using UnityEngine.EventSystems;
 
-namespace Feature.UIModule.Scripts.MainMenuStateMachine.States
+namespace Feature.UIModule.Scripts.MenuStateMachine.States
 {
     public class SettingStateUI : IMainMenuState
     {

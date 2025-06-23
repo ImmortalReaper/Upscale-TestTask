@@ -1,5 +1,6 @@
 using Feature.AnimationModule.Scripts;
-using Feature.UIModule.Scripts.MainMenuStateMachine.States;
+using Feature.UIModule.Scripts.MenuStateMachine;
+using Feature.UIModule.Scripts.MenuStateMachine.States;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -16,10 +17,10 @@ namespace Feature.UIModule.Scripts.Menus
         [Header("Animations")]
         [SerializeField] private DOTweenSequenceAnimator menuAnimation;
     
-        private MainMenuStateMachine.MainMenuStateMachine _mainMenuStateMachine;
+        private MainMenuStateMachine _mainMenuStateMachine;
     
         [Inject]
-        public void InjectDependencies(MainMenuStateMachine.MainMenuStateMachine mainMenuStateMachine)
+        public void InjectDependencies(MainMenuStateMachine mainMenuStateMachine)
         {
             _mainMenuStateMachine = mainMenuStateMachine;
         }

@@ -1,5 +1,5 @@
 using Core.Input;
-using Feature.UIModule.Scripts.BacktraceService;
+using Feature.UIModule.Scripts.NavigationHistoryService;
 using Zenject;
 
 namespace Feature.UIModule.Scripts.Menus
@@ -7,13 +7,13 @@ namespace Feature.UIModule.Scripts.Menus
     public class SettingsUI : BaseUIWindow
     {
         private IInputService _inputService;
-        private IUIBacktraceService _uiBacktraceService;
+        private IUINavigationHistoryService _uiNavigationHistoryService;
     
         [Inject]
-        public void InjectDependencies(IInputService inputService, IUIBacktraceService uiBacktraceService)
+        public void InjectDependencies(IInputService inputService, IUINavigationHistoryService uiNavigationHistoryService)
         {
             _inputService = inputService;
-            _uiBacktraceService = uiBacktraceService;
+            _uiNavigationHistoryService = uiNavigationHistoryService;
         }
 
         private void OnEnable()
@@ -28,7 +28,7 @@ namespace Feature.UIModule.Scripts.Menus
 
         private void OnBackPressed()
         {
-            _uiBacktraceService.Back();
+            _uiNavigationHistoryService.Back();
         }
     }
 }

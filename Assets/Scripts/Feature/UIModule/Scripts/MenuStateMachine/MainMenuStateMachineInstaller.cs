@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Feature.UIModule.Scripts.MainMenuStateMachine.States;
+using Feature.UIModule.Scripts.MenuStateMachine.States;
 using Zenject;
 
-namespace Feature.UIModule.Scripts.MainMenuStateMachine
+namespace Feature.UIModule.Scripts.MenuStateMachine
 {
     public class MainMenuStateMachineInstaller : Installer<MainMenuStateMachineInstaller>
     {

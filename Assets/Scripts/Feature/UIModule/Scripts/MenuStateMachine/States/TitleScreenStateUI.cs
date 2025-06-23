@@ -3,7 +3,7 @@ using Core.Audio.Scripts;
 using Feature.UIModule.Scripts.Menus;
 using Feature.UIModule.Scripts.ScreenTransition;
 
-namespace Feature.UIModule.Scripts.MainMenuStateMachine.States
+namespace Feature.UIModule.Scripts.MenuStateMachine.States
 {
     public class TitleScreenStateUI : IMainMenuState
     {

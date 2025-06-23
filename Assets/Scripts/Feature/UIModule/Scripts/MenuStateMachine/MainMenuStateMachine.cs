@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Core.StateMachine;
 using UnityEngine.EventSystems;
 
-namespace Feature.UIModule.Scripts.MainMenuStateMachine
+namespace Feature.UIModule.Scripts.MenuStateMachine
 {
     public class MainMenuStateMachine : StateMachine<IMainMenuState>
     {

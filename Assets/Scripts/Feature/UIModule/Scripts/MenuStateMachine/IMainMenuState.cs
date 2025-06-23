@@ -1,6 +1,6 @@
 using Core.StateMachine;
 
-namespace Feature.UIModule.Scripts.MainMenuStateMachine
+namespace Feature.UIModule.Scripts.MenuStateMachine
 {
     public interface IMainMenuState : IState
     {

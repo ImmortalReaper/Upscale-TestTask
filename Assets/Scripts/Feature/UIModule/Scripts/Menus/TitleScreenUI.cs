@@ -1,6 +1,7 @@
 using System;
 using Core.Input;
-using Feature.UIModule.Scripts.MainMenuStateMachine.States;
+using Feature.UIModule.Scripts.MenuStateMachine;
+using Feature.UIModule.Scripts.MenuStateMachine.States;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using Zenject;
@@ -10,11 +11,11 @@ namespace Feature.UIModule.Scripts.Menus
     public class TitleScreenUI : BaseUIWindow
     {
         private IInputService _inputService;
-        private MainMenuStateMachine.MainMenuStateMachine _mainMenuStateMachine;
+        private MainMenuStateMachine _mainMenuStateMachine;
         private IDisposable m_EventListener;
     
         [Inject]
-        public void InjectDependencies(IInputService inputService, MainMenuStateMachine.MainMenuStateMachine mainMenuStateMachine)
+        public void InjectDependencies(IInputService inputService, MainMenuStateMachine mainMenuStateMachine)
         {
             _mainMenuStateMachine = mainMenuStateMachine;
             _inputService = inputService;
